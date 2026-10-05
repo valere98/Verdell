@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verdelle Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{font-family:Inter,system-ui,sans-serif;color:#17342a;background:#f7f8f4;font-synthesis:none}
+*{box-sizing:border-box}
+body{margin:0}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px max(22px,calc((100% - 1160px)/2));background:#fff;border-bottom:1px solid #dce9e1}
+header a{color:#065f46;text-decoration:none}
+h1,h2{font-family:"Cormorant Garamond",Georgia,serif;font-weight:500}
+h1{font-size:30px;margin:0}
+main{max-width:1160px;margin:32px auto;padding:0 22px}
+.panel{background:#fff;border:1px solid #dce9e1;border-radius:16px;padding:22px;margin:0 0 22px;box-shadow:0 7px 26px #17342a0a}
+.panel h2{font-size:28px;margin:0 0 18px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+label{display:grid;gap:6px;font-size:12px;color:#406255}
+input,select,textarea{width:100%;min-width:0;border:1px solid #cbdcd2;border-radius:9px;background:#fbfcfa;color:#17342a;padding:10px 11px;font:14px Inter,system-ui,sans-serif}
+textarea{min-height:90px;resize:vertical}
+.wide{grid-column:1/-1}
+.check{display:flex;align-items:center;gap:9px}
+.check input{width:auto}
+button{border:0;border-radius:99px;background:#065f46;color:white;padding:10px 17px;font:600 12px Inter,system-ui,sans-serif;cursor:pointer}
+button.secondary{background:#e4f1e9;color:#065f46}
+button.danger{background:#fff0f0;color:#a12f32}
+button:disabled{opacity:.6;cursor:wait}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.notice{padding:12px 14px;border-radius:10px;background:#edf6ef;color:#24553e;line-height:1.5}
+.notice.error{background:#fff0ef;color:#9d2d2d}
+.notice[hidden],section[hidden],form[hidden]{display:none}
+.product-list{display:grid;gap:10px}
+.product-row{display:grid;grid-template-columns:64px minmax(0,1fr) auto;align-items:center;gap:13px;padding:10px;border:1px solid #e3ece6;border-radius:12px}
+.product-row img{width:64px;height:64px;object-fit:cover;border-radius:9px;background:#eef3ee}
+.product-row strong{display:block}
+.product-row small{display:block;color:#62786d;margin-top:4px;line-height:1.5}
+.product-row .actions{margin:0}
+.category-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid #e3ece6}
+.category-row:last-child{border-bottom:0}
+.category-row p{margin:4px 0 0;font-size:12px;color:#62786d}
+.auth-wrap{max-width:440px;margin:9vh auto;padding:0 20px}
+.auth-wrap h1{margin-bottom:18px}
+.muted{color:#62786d;font-size:12px;line-height:1.6}
+@media(max-width:650px){header{padding:16px 20px}.grid{grid-template-columns:1fr}.product-row{grid-template-columns:54px minmax(0,1fr)}.product-row img{width:54px;height:54px}.product-row>.actions{grid-column:1/-1}.category-row{align-items:start}}
+</style>
+</head>
+<body>
+<header><h1>Verdelle Admin</h1><a href="Verdelle%20%E2%80%94%20Exotic%20Plants%20Shop.html">← View shop</a></header>
+<main>
+<section class="auth-wrap panel" id="auth-panel">
+  <h1>Administrator sign in</h1>
+  <p class="muted">Sign in with the account that has been granted Verdelle administrator access.</p>
+  <form id="auth-form" class="grid">
+    <label class="wide">Email address<input name="email" type="email" autocomplete="username" required></label>
+    <label class="wide">Password<input name="password" type="password" autocomplete="current-password" required></label>
+    <div class="wide"><button type="submit">Sign in</button></div>
+  </form>
+  <p class="notice" id="auth-notice" role="status" hidden></p>
+</section>
+<section id="dashboard" hidden>
+  <div class="panel" style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap">
+    <div><h2 style="margin-bottom:4px">Shop management</h2><p class="muted" id="signed-in-as"></p></div>
+    <button class="secondary" id="signout" type="button">Sign out</button>
+  </div>
+  <div class="panel">
+    <h2>Plants → Add Plant</h2>
+    <p class="notice" id="product-notice" role="status" hidden></p>
+    <form id="product-form">
+      <input type="hidden" name="id">
+      <div class="grid">
+        <label>Plant / product name<input name="name" required maxlength="120" placeholder="Monstera Thai Constellation"></label>
+        <label>Category<select name="category_id" required></select></label>
+        <label>Product type<select name="kind"><option value="plant">Plant</option><option value="accessory">Accessory</option></select></label>
+        <label>Price<input name="price" type="number" min="0" step="0.01" required placeholder="65.51"></label>
+        <label>Stock<input name="stock" type="number" min="0" step="1" required value="0"></label>
+        <label>Light<input name="light" placeholder="Bright indirect"></label>
+        <label>Watering<input name="watering" placeholder="When top 2–3 cm dries"></label>
+        <label>Image upload<input name="image" type="file" accept="image/jpeg,image/png,image/webp,image/avif"></label>
+        <label class="wide">Description<textarea name="description" placeholder="Describe the plant or product"></textarea></label>
+        <label>Status<select name="status"><option value="available">Available</option><option value="unavailable">Unavailable</option></select></label>
+      </div>
+      <div class="actions"><button type="submit">Save product</button><button class="secondary" type="button" id="cancel-edit" hidden>Cancel edit</button></div>
+    </form>
+  </div>
+  <div class="panel">
+    <h2>Products</h2>
+    <div class="product-list" id="product-list"><p class="muted">Loading products…</p></div>
+  </div>
+  <div class="panel">
+    <h2>Find your plant → Categories</h2>
+    <p class="notice" id="category-notice" role="status" hidden></p>
+    <form id="category-form">
+      <input type="hidden" name="original_id">
+      <div class="grid">
+        <label>Category name<input name="name" required maxlength="100" placeholder="Tropical & Aroids"></label>
+        <label>Category ID<input name="id" required pattern="[a-z0-9-]+" placeholder="tropical-aroids"></label>
+        <label>Display order<input name="sort_order" type="number" step="1" value="1" required></label>
+        <label class="check"><input name="active" type="checkbox" checked> Visible in the plant finder</label>
+        <label class="wide">Description<textarea name="description" placeholder="Category description shown in Find your plant"></textarea></label>
+      </div>
+      <div class="actions"><button type="submit">Save category</button><button class="secondary" type="button" id="cancel-category-edit" hidden>Cancel edit</button></div>
+    </form>
+    <div id="category-list" style="margin-top:18px"><p class="muted">Loading categories…</p></div>
+  </div>
+</section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/supabase-client.js"></script>
+<script src="assets/admin.js"></script>
+</body>
+</html>
