@@ -191,8 +191,8 @@ footer{margin-top:60px;font-size:12px}
 </dialog>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/supabase-client.js"></script>
-<script src="assets/storefront.js">
+<script type="module" src="/assets/supabase-client.js"></script>
+<script type="module" src="/assets/storefront.js">
 const P=[["Philodendron Pink Princess",42,"https://i.pinimg.com/736x/ad/ce/f0/adcef0858388dee54477b9c21e7cfd84.jpg"],["Monstera Albo Variegata",89,"https://i.pinimg.com/1200x/ce/bc/99/cebc99e43844f31ec1750d1351229e6d.jpg"],["Anthurium Clarinervium",54,"https://i.pinimg.com/736x/38/09/3f/38093f2100f1ca9df83996f2fcfeef90.jpg"]];
 const O=[["Forma 01 Ceramic Pot",29.9,"https://i.pinimg.com/1200x/4e/71/71/4e71714c8f6b08baf9b9179d58252c42.jpg"],["Terracurve Planter",39.9,"https://i.pinimg.com/1200x/eb/9c/29/eb9c2968a576be40bdfbcb742677cce9.jpg"],["Moss Pole Support",14.9,"https://i.pinimg.com/1200x/0c/51/61/0c5161425abd6b4d9c7eed0d6d2b5ca4.jpg"],["Aroid Mix Soil, 3 L",10.9,"https://i.pinimg.com/1200x/e3/1c/72/e31c72a41d72da96f4b9e786756e3605.jpg"]];
 const products=[...P.map((p,i)=>({id:`plant-${i}`,name:p[0],price:p[1],image:p[2]})),...O.map((p,i)=>({id:`accessory-${i}`,name:p[0],price:p[1],image:p[2]}))];
